@@ -51,19 +51,23 @@ print("Question 3 - Palindromes")
 ## written backwards). For example, is_palindrome("radar") should return True.
 
 def is_palindrome(stringToTest):
-    length = len(stringToTest)
-    print length/2+1
-    if(stringToTest[0]==stringToTest[-1]):
-        print "Yes! "+str(stringToTest)+" is a palindrome."
-    else:
-        print "Nope, "+str(stringToTest)+" is not a palindrome."
+    lowered = stringToTest.lower().strip().replace(' ', '')
+    palindrome = 'True'
+    for i in range(0,len(lowered),1):
+        if lowered[i]!=lowered[-i-1]:
+            palindrome = 'False'
+    print lowered, palindrome
 
-is_palindrome("hello")
+is_palindrome("heLlO Olle h")
 is_palindrome("racecar")
-is_palindrome("raceecar")
+is_palindrome("Raceecar")
+is_palindrome("joeriley")
+is_palindrome("abbaabba")
+is_palindrome("true")
+is_palindrome("tacocat")
 
 print("")
-print("Question 4 - Procedural Histrogram")
+print("Question 4 - Procedural Histogram")
 
 ## Define a procedure histogram() that takes a list of integers and prints a histogram to the screen.
 ## For example, histogram([4, 9, 7]) should print the following:
@@ -76,5 +80,5 @@ def histogram(numList):
     for i in numList:
         print i*'*'
 
-myList = [3,7,8,5]
+myList = [3,7,8,25,23,13,6]
 histogram(myList)

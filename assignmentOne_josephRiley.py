@@ -21,7 +21,6 @@ def npv(numYears, initVal, IRR):
     #print ("The net present value is ${:,.2f}".format(netpv))
     print ("The future expected value is ${:,.2f}".format(netfv))
 
-
 npv(20,1000000,.04)
 
 print("")

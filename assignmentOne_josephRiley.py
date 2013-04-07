@@ -6,7 +6,7 @@ Created on Apr 6, 2013
 
 ## Energy Analytics - Assignment 1 - Python Intro
 
-
+print("Question 1 - NPV")
 ## Question 1:
 ## Write a function that takes as input:
 ##   a. Number of years
@@ -24,31 +24,57 @@ def npv(numYears, initVal, IRR):
 
 npv(20,1000000,.04)
 
+print("")
+print("Question 2 - Bubble Sort")
 ## Question 2.
 ## Bubble sort is an easy (but inefficient) method to sort a list. It scan a pairs of numbers in the list.
 ## Whenever a pair that is not in order is found, the two numbers are swapped.
 ## Implement bubble sort (it should only work on lists).
 
-#def sort(myList):
-#    for i in myList:
-#        if(myList[i]>=myList[i+1]):
-#            swap = myList[i + 1]
-#            myList[i] = myList[i+1]
-#            myList[i] = swap
-#    return myList
-#
-#badlist = [3,4,2,1,45]
-#sort(badlist)
+## We need two pointers:  one for the element i and another for element i+1
+def sort(myList): # Bubble Sort Algorithm
+    for i in range(len(myList)):
+        for j in range(i+1, len(myList)):
+            if myList[i] > myList[j]:
+                myList[j], myList[i]  = myList[i], myList[j]
 
-def bubbleSort(numbers): # Bubble Sort Algorithm
-    nums = list(numbers)
-    for i in range(len(nums)):
-        for j in range(i+1, len(nums)):
-            if numbers[j] < numbers[i]:
-                numbers[j], numbers[i] = numbers[i], numbers[j]
-
-    print numbers
+    print "The new sorted list is "+str(myList)
     
-badlist = [2,5,4,3,25,22,21,5252]
-bubbleSort(badlist)
+badList = [2,5,4,3,25,22,21,5252]
+print("The input is "+str(badList))
+sort(badList)
 
+print("")
+print("Question 3 - Palindromes")
+## Question 3.
+## Define a function is_palindrome() that recognizes palindromes (i.e. words that look the same
+## written backwards). For example, is_palindrome("radar") should return True.
+
+def is_palindrome(stringToTest):
+    length = len(stringToTest)
+    print length/2+1
+    if(stringToTest[0]==stringToTest[-1]):
+        print "Yes! "+str(stringToTest)+" is a palindrome."
+    else:
+        print "Nope, "+str(stringToTest)+" is not a palindrome."
+
+is_palindrome("hello")
+is_palindrome("racecar")
+is_palindrome("raceecar")
+
+print("")
+print("Question 4 - Procedural Histrogram")
+
+## Define a procedure histogram() that takes a list of integers and prints a histogram to the screen.
+## For example, histogram([4, 9, 7]) should print the following:
+## ****
+## *********
+## *******
+
+def histogram(numList):
+    print numList
+    for i in numList:
+        print i*'*'
+
+myList = [3,7,8,5]
+histogram(myList)

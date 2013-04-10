@@ -14,13 +14,23 @@ print("Question 1 - NPV")
 ##   c. Internal rate of return
 ## and it returns the NPV value. Report the result for years = 20, investment = $1m, rate = 4%.
 
-def npv(numYears, initVal, IRR):
+def efv(numYears, initVal, IRR):
+    #npv is the discounted future cash flows (payments) usually offset by the initial investment outlay
+    #with these inputs, we must solve for the future expected value.
     #netpv = futureValue/pow((1+IRR),numYears)
     netfv = (initVal*pow((1+IRR),numYears))
     print ("For ${:,.2f}".format(initVal)+" compounded yearly for "+str(numYears)+" years with an annual rate of return at "+str(IRR)+"%,")
     #print ("The net present value is ${:,.2f}".format(netpv))
     print ("The future expected value is ${:,.2f}".format(netfv))
 
+efv(20,1000000,.04)
+
+print("")
+print("Alternatively, if we consider 1,000,000 to be the expected value in 20 years, what is the present value with a discount rate of .04%?")
+
+def npv(numYears, initVal, IRR):
+    netpv = (initVal/pow((1+IRR),numYears))
+    print ("The present value of ${:,.2f}".format(initVal)+", "+str(numYears)+" years from today, assuming a rate of "+str(IRR)+"%, is ${:,.2f}".format(netpv))
 npv(20,1000000,.04)
 
 print("")
@@ -54,6 +64,9 @@ def is_palindrome(stringToTest):
     lowered = stringToTest.lower().strip().replace(' ', '')
     palindrome = 'True'
     for i in range(0,len(lowered),1):
+        #default is true and we look for a false case 
+        #between a letter some distance from the start and same distance from the end
+        #i must equal -i but we must consider the zero indexing so adjust -i by -1
         if lowered[i]!=lowered[-i-1]:
             palindrome = 'False'
     print lowered, palindrome

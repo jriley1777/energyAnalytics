@@ -35,7 +35,8 @@ def sort(myList): # Bubble Sort Algorithm
     for i in range(len(myList)):
         for j in range(i+1, len(myList)):
             if myList[i] > myList[j]:
-                myList[j], myList[i]  = myList[i], myList[j]
+                #double assignment to do the swap
+                myList[i], myList[j]  = myList[j], myList[i]
 
     print "The new sorted list is "+str(myList)
     

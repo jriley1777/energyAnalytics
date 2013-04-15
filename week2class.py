@@ -73,3 +73,18 @@ import numpy.linalg as la
 ##  PANDAS
 #####################
 
+from pandas import *
+dates = np.asarray(date_range("01/01/2013",periods=12))
+print dates
+from numpy.random import randn
+df = DataFrame(randn(12,4),index=dates,columns=['A','B','C','D'])
+print df
+
+#select a column
+x = df["C"]
+x = df.C
+print x
+
+print df[:3]
+df[df["A"]>0]
+

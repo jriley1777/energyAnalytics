@@ -19,12 +19,12 @@ np.fill_diagonal(cost,0)
 #create sampling dictionary with arcs and labels
 sampleNet = {0:{}}
 labelstart=1000000
-print sampleNet
+#print sampleNet
 #0 will be start and 1 will be end
 sampleNet[0] = {'arcs':dict(zip(range(2,4),cost[0,range(2,4)])),'label':0}
-print sampleNet
+#print sampleNet
 sampleNet[1]= {'arcs':{1:0},'label':labelstart}
-print sampleNet
+#print sampleNet
 sample = []
 for i in range(2,numNodes):
     sample = rand.sample((range(2,i)+range(i+1,numNodes)),numNodes/3) #avoid selecting i in sample

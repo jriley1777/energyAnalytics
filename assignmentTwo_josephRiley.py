@@ -9,63 +9,106 @@ Created on Apr 14, 2013
 import numpy as np
 import random as rand
 
-#create cost matrix
-numNodes = 11
-cost = np.random.random_integers(low=-1,high=100,size=(numNodes,numNodes))
-np.fill_diagonal(cost,0)
-#print cost
+##Even if this is inefficient, I figured I'd send along where my real effort was rather than just 
+##reformating your pseudo code for the network.  I see that I can just avoid the cost matrix by using
+##randn to get a probability for a given node, check if at or below .3, if so we generate a random integer
+##between -1 and 100 as the arc cost.
 
 
-#create sampling dictionary with arcs and labels
-sampleNet = {0:{}}
-labelstart=1000000
-#print sampleNet
-#0 will be start and 1 will be end
-sampleNet[0] = {'arcs':dict(zip(range(2,4),cost[0,range(2,4)])),'label':0}
-#print sampleNet
-sampleNet[1]= {'arcs':{1:0},'label':labelstart}
-#print sampleNet
-sample = []
-for i in range(2,numNodes):
-    sample = rand.sample((range(2,i)+range(i+1,numNodes)),numNodes/3) #avoid selecting i in sample
-    unitcost = []
-    for j in sample:
-        unitcost.append(cost[i,j])
-    sampleNet[i] = {'arcs':dict(zip(sample,unitcost)),'label':labelstart}
-for i in range(numNodes-2,numNodes):
-    sample = rand.sample((range(2,i)+range(i+1,numNodes)),numNodes/3-1)
-    sample.append(1)
-    unitcost = []
-    for j in sample:
-        unitcost.append(cost[i,j])
-    sampleNet[i] = {'arcs':dict(zip(sample,unitcost)),'label':labelstart}
+def randNetwork(numNodes=np.random.randint(500,1000), inOutConnections=10):
+    
+    if numNodes < inOutConnections+2:
+        print "Please provide a number greater than or equal to 12"
+    
+    else:
+        
+        #Cost reference start
+        cost = np.random.randint(low=-1,high=100,size=(numNodes,numNodes))
+        np.fill_diagonal(cost,0)
+        #Cost reference end
+        
+        #Network start
+        
+        #create sampling dictionary with arcs and labels
+        network = {0:{}}
+        labelstart=1000000 #default label
+        
+        #0 will be start and 1 will be end
+        network[0] = {'arcs':dict(zip(range(2,inOutConnections+2),cost[0,range(2,inOutConnections+2)])),'label':0}
+        network[1]= {'arcs':{1:0},'label':labelstart}
+        #print network
+        sample = []
+        for i in range(2,numNodes):
+            sample = rand.sample((range(2,i)+range(i+1,numNodes)),numNodes/3) #avoid selecting i in sample
+            unitcost = []
+            for j in sample:
+                unitcost.append(cost[i,j])
+            network[i] = {'arcs':dict(zip(sample,unitcost)),'label':labelstart}
+        for i in range(numNodes-(inOutConnections),numNodes):
+            sample = rand.sample((range(2,i)+range(i+1,numNodes)),((numNodes/3)-1))
+            sample.append(1)
+            unitcost = []
+            for j in sample:
+                unitcost.append(cost[i,j])
+            network[i] = {'arcs':dict(zip(sample,unitcost)),'label':labelstart}
+        return network
+    
+#Network end
 
+#Algorithm start
+
+def shortpath(network):
+    S=[]
+    
+    ##Working on figuring out how to write the path from this
+    #minpath={}
+    #for i in range(len(network.keys())): 
+    #    minpath[i] = []
+    #    minpath[i].append(0)
+    
+    
+        
+    #Change negative arc values
+    print "Checking for negative arc costs..."
+    for i in range(len(network.keys())): 
+        for z in network[i]['arcs']:     
+            for k,v in network[i]['arcs'].items():
+                if v < 0:
+                    print "There is a negative arc connection with node " + str(i)
+                    print "Changing value to 1,000,000"
+                    network[i]['arcs'][k] = 1000000
+    print "Arc check complete"
+                        
+    for i in range(len(network.keys())):   
+        sl = 1000000
+        bn = None
+        for j in range(len(network.keys())):
+            if not j in S:
+                if network[j]['label'] < sl:
+                    sl = network[j]['label']
+                    bn = j
+                    
+        S.append(bn)
+        print S, network
+        
+        #find our new label
+        for z in network[bn]['arcs']:     
+            for k,v in network[bn]['arcs'].items():
+                    network[k]['label'] = min(network[k]['label'],(network[bn]['label']+network[bn]['arcs'][k]))
+                    #minpath[k] = bn    
+                    
+    #return statements
+    if network[1]['label'] < 1000000:
+        print "The shortest path distance is " + str(network[1]['label'])
+    else:
+        print "No possible path"
+
+#Algorithm end
+
+#default number of nodes is a random integer between 500 and 1000 nodes
+#default in/out connections is 10
+
+sampleNet = randNetwork(numNodes=12,inOutConnections=3)
+print "Initial network connections"
 print sampleNet
-
-#net={0:dict(arcs={},label=sys.maxint)}
-#{0:{'arcs':{1:121,..},'label':10000}}
-
-s=0
-t=1
-S=[]
-print S
-for i in range(len(sampleNet.keys())):
-    sl = 1000000
-    bn = None
-    for j in range(len(sampleNet.keys())):
-        if not j in S:
-            if sampleNet[j]['label'] < sl:
-                #print sampleNet[j]['label']
-                sl = sampleNet[j]['label']
-                bn = j
-                
-    S.append(bn)
-    if 1 in S: break
-    print S, sampleNet
-    for z in sampleNet[bn]['arcs']:     
-        for k,v in sampleNet[bn]['arcs'].items():
-            sampleNet[k]['label'] = min(sampleNet[k]['label'],(sampleNet[bn]['label']+sampleNet[bn]['arcs'][k]))
-#            print labelofk #cost of arc from bn to k: net[bn][arcs][k]
-
-print sampleNet
-print sampleNet[1]['label']
+shortpath(sampleNet)
